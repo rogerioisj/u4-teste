@@ -1,4 +1,13 @@
 {
+   "type": "postgres",
+   "host": "localhost",
+   "port": 5432,
+   "username": "u4crypto",
+   "password": "u4crypto",
+   "database": "teste",
+   "installExtensions": false,
+   "applicationName": "Teste u4crypto",
+   "uuidExtension": "uuid-ossp",
    "synchronize": true,
    "logging": false,
    "entities": [
