@@ -1,24 +1,30 @@
 {
-  "name": "teste-tecnico-u4crypto",
-  "version": "1.0.0",
-  "description": "Teste técnico para U4Crypto",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rogerioisj/u4-teste.git"
-  },
-  "author": "Rogerio Inacio",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rogerioisj/u4-teste/issues"
-  },
-  "homepage": "https://github.com/rogerioisj/u4-teste#readme",
-  "dependencies": {
-    "@hapi/hapi": "^20.2.0",
-    "@types/node": "^16.10.1",
-    "typescript": "^4.4.3"
-  }
+   "name": "test-tecnico-u4crypto",
+   "version": "0.0.1",
+   "description": "Teste técnico para U4Crypto",
+   "devDependencies": {
+      "ts-node": "3.3.0",
+      "@types/node": "^8.0.29",
+      "typescript": "3.3.3333"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/rogerioisj/u4-teste.git"
+   },
+   "author": "Rogerio Inacio",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/rogerioisj/u4-teste/issues"
+   },
+   "homepage": "https://github.com/rogerioisj/u4-teste#readme",
+   "dependencies": {
+      "@hapi/hapi": "^20.2.0",
+      "@types/node": "^16.10.1",
+      "typescript": "^4.4.3",
+      "typeorm": "0.2.28",
+      "reflect-metadata": "^0.1.10"
+   }
 }
