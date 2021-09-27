@@ -8,7 +8,7 @@
    "installExtensions": false,
    "applicationName": "Teste u4crypto",
    "uuidExtension": "uuid-ossp",
-   "synchronize": true,
+   "synchronize": false,
    "logging": false,
    "entities": [
       "src/entity/**/*.ts"
