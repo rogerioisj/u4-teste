@@ -30,5 +30,5 @@ export class Register {
         enum: UserRole,
         default: UserRole.THIRD_PARTY
     })
-    type: UserRole
+    type: UserRole;
 }
