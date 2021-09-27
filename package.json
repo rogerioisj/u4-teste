@@ -22,6 +22,7 @@
    "homepage": "https://github.com/rogerioisj/u4-teste#readme",
    "dependencies": {
       "@hapi/hapi": "^20.2.0",
+      "@types/hapi": "^18.0.6",
       "pg": "^8.7.1",
       "reflect-metadata": "^0.1.10",
       "typeorm": "0.2.28"
