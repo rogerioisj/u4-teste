@@ -14,5 +14,5 @@ export class Client {
 
     @OneToOne(() => Register)
     @JoinColumn()
-    register: Register
+    register: Register;
 }
