@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import { Register } from "./register.entity";
 import { Car } from "./car.entity";
 
@@ -7,9 +7,9 @@ export class Accident {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @OneToOne(() => Register)
+  @ManyToMany(() => Register)
   @JoinColumn()
-  thirdParty: Register;
+  thirdParty: Register[];
 
   @OneToOne(() => Car)
   @JoinColumn()
