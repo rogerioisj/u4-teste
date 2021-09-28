@@ -1,6 +1,7 @@
 import * as Hapi from "@hapi/hapi";
 import { RegisterControllerRoutes } from "../controllers/register.controller";
 import { AuthControllerRoutes } from "../controllers/auth.controller";
+import {AccidentControllerRoutes} from "../controllers/accident.controller";
 
 export const start: Hapi.Plugin<undefined> = {
   name: "app/status",
@@ -23,4 +24,5 @@ export const routes = [
   start,
   ...RegisterControllerRoutes,
   ...AuthControllerRoutes,
+  ...AccidentControllerRoutes,
 ];
