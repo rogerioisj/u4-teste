@@ -9,7 +9,7 @@ export class Client {
   @Column("varchar", { length: 50 })
   login: string;
 
-  @Column("varchar", { length: 50 })
+  @Column("text")
   password: string;
 
   @OneToOne(() => Register)
