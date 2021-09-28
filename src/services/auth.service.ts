@@ -81,6 +81,74 @@ export class AuthService {
 
     return await this.createToken(user);
   }
+
+  async edit(client: Client, token: string) {
+    const tokenDecode: any = jwt.decode(token);
+
+    const connection: Connection = await getConnection();
+
+    const clientFound: any = await connection
+      .createQueryBuilder()
+      .from(Client, `c`)
+      .innerJoin(Register, "r", "c.registerId = r.id")
+      .where(`c.id = :id`, { id: tokenDecode.id })
+      .getRawOne();
+
+    if (!clientFound) {
+      throw { message: "User not found", code: 400 };
+    }
+
+    const newRegister = new Register();
+
+    newRegister.id = clientFound.registerId;
+    newRegister.name = client.register.name
+      ? client.register.name
+      : clientFound.name;
+    newRegister.cpf = client.register.cpf
+      ? client.register.cpf
+      : clientFound.cpf;
+    newRegister.rg = client.register.rg ? client.register.rg : clientFound.rg;
+    newRegister.cellphone = client.register.cellphone
+      ? client.register.cellphone
+      : clientFound.cellphone;
+    newRegister.email = client.register.email
+      ? client.register.email
+      : clientFound.email;
+
+    const newClient = new Client();
+
+    newClient.id = clientFound.id;
+    newClient.login = client.login ? client.login : clientFound.login;
+    newClient.password = client.password
+      ? await bcrypt.hash(client.password, 12)
+      : clientFound.password;
+    newClient.register = newRegister;
+
+    await connection
+      .createQueryBuilder()
+      .update(Register)
+      .set({
+        name: newRegister.name,
+        cpf: newRegister.cpf,
+        rg: newRegister.rg,
+        cellphone: newRegister.cellphone,
+        email: newRegister.email,
+      })
+      .where("id = :id", { id: newRegister.id })
+      .execute();
+
+    await connection
+        .createQueryBuilder()
+        .update(Client)
+        .set({
+          login: newClient.login,
+          password: newClient.password
+        })
+        .where("id = :id", { id: newClient.id })
+        .execute();
+
+    return newClient;
+  }
 }
 
 export const validate = async (
@@ -92,8 +160,6 @@ export const validate = async (
   const clientRepository = connection.getRepository(Client);
 
   const user = await clientRepository.findOne({ login: decoded.login });
-
-  console.log(user)
 
   if (!user) {
     return { isValid: false };
