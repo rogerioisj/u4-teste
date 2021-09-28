@@ -24,20 +24,6 @@ const server: Server = Hapi.server({
 });
 
 export async function start(): Promise<Server> {
-  /*await server.register(HapiJWT.plugin);
-
-  server.auth.strategy("authenticate", "hapi-jsonwebtoken", {
-    secretOrPrivateKey: process.env.JWT_SECRET,
-    sign: {},
-    decode: {},
-    verify: {},
-    getToken: (request: Hapi.Request) => {
-      return request.headers.authorization;
-    },
-    validate,
-  });
-  server.auth.default("jwt");*/
-
   await server.register(hapiAuthJwt2);
   server.auth.strategy('jwt', 'jwt',
       { key: process.env.JWT_SECRET,
