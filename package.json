@@ -24,6 +24,7 @@
       "typeorm": "^0.2.37"
    },
    "devDependencies": {
+      "@hapi/basic": "^6.0.0",
       "@types/hapi__hapi": "20.0.8",
       "@types/hapi-pino": "8.0.2",
       "@types/jest": "26.0.24",
