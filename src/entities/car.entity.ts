@@ -6,5 +6,5 @@ export class Car {
   id: string;
 
   @Column("varchar", { length: 7 })
-  placa: string;
+  license_plate: string;
 }
