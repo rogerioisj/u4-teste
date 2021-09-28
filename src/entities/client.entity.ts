@@ -12,7 +12,7 @@ export class Client {
   @Column("text")
   password: string;
 
-  @OneToOne(() => Register)
+  @OneToOne(() => Register, (entity) => entity.id,{cascade: true})
   @JoinColumn()
   register: Register;
 }
