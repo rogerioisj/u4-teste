@@ -3,8 +3,17 @@ import * as Hapi from "@hapi/hapi";
 import * as dotenv from "dotenv";
 import { Server } from "@hapi/hapi";
 import { routes } from "./plugins/routes";
+import { createConnection } from "typeorm";
 
 dotenv.config();
+
+createConnection()
+  .then(() => {
+    console.log(`DB connected`);
+  })
+  .catch((e) => {
+    console.log(e);
+  });
 
 const server: Server = Hapi.server({
   port: process.env.PORT || 3000,
