@@ -38,10 +38,26 @@ const signup = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   }
 };
 
+const login = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
+  try {
+    const user: any = request.payload;
+
+    const authService = new AuthService();
+
+    return { Authorization: await authService.login(user.login, user.password)}
+  } catch (e) {
+    if (e.code) {
+      return h.response({ error: e.message }).code(e.code);
+    }
+
+    return h.response({ error: e.message }).code(500);
+  }
+}
+
 const signUp: Hapi.Plugin<undefined> = {
   name: "auth/signup",
   register: async function (server: Hapi.Server) {
-    server.route({
+    server.route([{
       method: "POST",
       path: `/${RESOURCE}/signup`,
       handler: signup,
@@ -59,7 +75,21 @@ const signUp: Hapi.Plugin<undefined> = {
           }),
         },
       },
-    });
+    },
+      {
+        method: "POST",
+        path: `/${RESOURCE}/login`,
+        handler: login,
+        options: {
+          auth: false,
+          validate: {
+            payload: Joi.object({
+              login: Joi.string().required(),
+              password: Joi.string().required(),
+            }),
+          },
+        },
+      }]);
   },
 };
 
