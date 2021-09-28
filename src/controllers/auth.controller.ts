@@ -91,7 +91,7 @@ const edit = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   }
 };
 
-const signUp: Hapi.Plugin<undefined> = {
+const auth: Hapi.Plugin<undefined> = {
   name: "auth/signup",
   register: async function (server: Hapi.Server) {
     server.route([
@@ -151,4 +151,4 @@ const signUp: Hapi.Plugin<undefined> = {
   },
 };
 
-export const AuthControllerRoutes = [signUp];
+export const AuthControllerRoutes = [auth];
