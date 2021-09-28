@@ -8,9 +8,9 @@ export class Token {
   @Column("text")
   token: string;
 
-  @Column("date")
+  @Column("timestamp")
   created_at: Date;
 
-  @Column("date")
+  @Column("timestamp")
   expires_at: Date;
 }
