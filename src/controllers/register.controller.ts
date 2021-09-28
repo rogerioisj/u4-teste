@@ -11,6 +11,9 @@ const create: Hapi.Plugin<undefined> = {
     server.route({
       method: "POST",
       path: `/${RESOURCE}/create`,
+      options: {
+        auth: "jwt"
+      },
       handler: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         try {
           const registerService = new RegisterService();
