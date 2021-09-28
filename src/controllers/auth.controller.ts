@@ -28,11 +28,11 @@ const signup = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
 
     newClient = await authService.create(newClient);
 
-    return newClient;
+    return {Authorization: await authService.createToken(newClient),newClient};
   } catch (e) {
-    if (e.code) {
+    /*if (e.code) {
       return h.response({ error: e.message }).code(e.code);
-    }
+    }*/
 
     return h.response({ error: e.message }).code(500);
   }

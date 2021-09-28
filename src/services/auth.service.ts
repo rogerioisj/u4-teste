@@ -5,6 +5,7 @@ import { Register } from "../entities/register.entity";
 import { RegisterService } from "./register.service";
 import * as Hapi from "@hapi/hapi";
 import * as jwt from "jsonwebtoken";
+import {Token} from "../entities/token.entity";
 
 export class AuthService {
   async create(client: Client) {
@@ -43,12 +44,24 @@ export class AuthService {
     return savedClient;
   }
 
-  createToken(user: Client) {
-    return jwt.sign(
+  async createToken(user: Client) {
+    const token = jwt.sign(
       { id: user.id, login: user.login },
       process.env.JWT_SECRET,
       { algorithm: "HS256", expiresIn: process.env.TOKEN_EXPIRATION_TIME }
     );
+
+    const tokenDecoded: any = jwt.decode(token);
+
+    const connection: Connection = await getConnection();
+
+    await connection.getRepository(Token).save({
+      token: token,
+      created_at: new Date(tokenDecoded.iat * 1000),
+      expires_at: new Date(tokenDecoded.exp * 1000),
+    })
+
+    return token;
   }
 }
 
