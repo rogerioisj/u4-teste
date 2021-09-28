@@ -5,7 +5,10 @@ import { Register } from "../entities/register.entity";
 import { RegisterService } from "./register.service";
 import * as Hapi from "@hapi/hapi";
 import * as jwt from "jsonwebtoken";
-import {Token} from "../entities/token.entity";
+import { Token } from "../entities/token.entity";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 export class AuthService {
   async create(client: Client) {
@@ -18,8 +21,6 @@ export class AuthService {
     const register: Register = await registerService.findByCpf(
       client.register.cpf
     );
-
-    console.log(register);
 
     if (!register) {
       await registerService.create(client.register);
@@ -59,9 +60,26 @@ export class AuthService {
       token: token,
       created_at: new Date(tokenDecoded.iat * 1000),
       expires_at: new Date(tokenDecoded.exp * 1000),
-    })
+    });
 
     return token;
+  }
+
+  async login(login: string, password: string) {
+    const connection: Connection = await getConnection();
+    const user = await connection.getRepository(Client).findOne({ login });
+
+    if (!user) {
+      throw { message: "User not found", code: 400 };
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      throw { message: "Password incorrect", code: 400 };
+    }
+
+    return await this.createToken(user);
   }
 }
 
@@ -75,11 +93,11 @@ export const validate = async (
 
   const user = await clientRepository.findOne({ login: decoded.login });
 
+  console.log(user)
+
   if (!user) {
     return { isValid: false };
   }
 
-  const valid = await bcrypt.compare(decoded.password, user.password);
-
-  return { isValid: valid };
+  return { isValid: true };
 };
