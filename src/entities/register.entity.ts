@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
 
 export enum UserRole {
     CLIENT = "client",
@@ -16,13 +16,13 @@ export class Register {
     @Column('varchar', { length: 11 })
     cellphone: string;
 
-    @Column('varchar', { length: 50})
+    @Column({type: 'varchar', length: 50, unique: true })
     email: string;
 
-    @Column('varchar', { length: 11 })
+    @Column({type: 'varchar', length: 11, unique: true })
     cpf: string;
 
-    @Column('varchar', { length: 10 })
+    @Column({type: 'varchar', length: 10, unique: true })
     rg: string;
 
     @Column({
