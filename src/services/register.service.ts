@@ -12,7 +12,6 @@ export class RegisterService {
     }
 
     if (!register.cpf || register.cpf.length < 11) {
-      console.log(register.cpf);
       throw new Error(`CPF inválido`);
     }
 
