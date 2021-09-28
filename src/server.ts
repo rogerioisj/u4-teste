@@ -1,11 +1,15 @@
-import * as Hapi from '@hapi/hapi';
-import * as dotenv from 'dotenv';
-import {Server} from "@hapi/hapi";
-import {routes} from "./plugins/routes";
+import "reflect-metadata";
+import * as Hapi from "@hapi/hapi";
+import * as dotenv from "dotenv";
+import { Server } from "@hapi/hapi";
+import { routes } from "./plugins/routes";
 
-dotenv.config()
+dotenv.config();
 
-const server: Server = Hapi.server({  port: process.env.PORT || 3000,  host: process.env.HOST || `localhost`,});
+const server: Server = Hapi.server({
+  port: process.env.PORT || 3000,
+  host: process.env.HOST || `localhost`,
+});
 
 export async function start(): Promise<Server> {
   await server.register(routes);
@@ -20,7 +24,6 @@ process.on("unhandledRejection", (err) => {
   process.exit(1);
 });
 
-start()
-  .catch((err) => {
-    console.log(err);
-  });
+start().catch((err) => {
+  console.log(err);
+});
