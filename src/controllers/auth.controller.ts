@@ -3,6 +3,7 @@ import * as Joi from "joi";
 import { Register, UserRole } from "../entities/register.entity";
 import { AuthService } from "../services/auth.service";
 import { Client } from "../entities/client.entity";
+import {ClientInterface} from "../interfaces/client.interface";
 
 const RESOURCE = "auth";
 
@@ -63,7 +64,7 @@ const edit = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   try {
     const token = request.headers.authorization.split(' ');
 
-    const client: any = request.payload;
+    const client: ClientInterface = <ClientInterface>request.payload;
 
     const registerReceived = new Register();
 
@@ -82,7 +83,7 @@ const edit = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
 
     const authService = new AuthService();
 
-    return await authService.edit(clientReceived, token[1]);
+    return h.response(await authService.edit(clientReceived, token[1])).code(200);
   } catch (e) {
     /*if (e.code) {
       return h.response({ error: e.message }).code(e.code);
