@@ -93,7 +93,7 @@ export class AuthService {
   }
 
   async edit(client: Client, token: string) {
-    const tokenDecode: any = jwt.decode(token);
+    const tokenDecode: JwtInterface = <JwtInterface>jwt.decode(token);
 
     const connection: Connection = await getConnection();
 
@@ -173,7 +173,7 @@ export class AuthService {
 }
 
 export const validate = async (
-  decoded: any,
+  decoded: JwtInterface,
   request: Hapi.Request,
   h: Hapi.ResponseToolkit
 ) => {
