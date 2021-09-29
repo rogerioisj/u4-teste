@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import { Register } from "./register.entity";
 import {Client} from "./client.entity";
 
@@ -15,6 +15,6 @@ export class Accident {
   car_license_plate: string;
 
   @ManyToMany(() => Register)
-  @JoinColumn()
+  @JoinTable()
   thirdParty: Register[];
 }
