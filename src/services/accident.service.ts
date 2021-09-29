@@ -37,8 +37,6 @@ export class AccidentService {
       }
     }
 
-    console.log(accident);
-
     accident.thirdParty = [...registers];
     accident.client = user;
 
