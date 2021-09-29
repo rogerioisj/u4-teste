@@ -1,11 +1,11 @@
-import {Client} from "../entities/client.entity";
+import { Client } from "../entities/client.entity";
 import * as bcrypt from "bcrypt";
-import {Connection, getConnection} from "typeorm";
-import {Register, UserRole} from "../entities/register.entity";
-import {RegisterService} from "./register.service";
+import { Connection, getConnection } from "typeorm";
+import { Register, UserRole } from "../entities/register.entity";
+import { RegisterService } from "./register.service";
 import * as Hapi from "@hapi/hapi";
 import * as jwt from "jsonwebtoken";
-import {Token} from "../entities/token.entity";
+import { Token } from "../entities/token.entity";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -98,6 +98,17 @@ export class AuthService {
 
     const clientFound: any = await connection
       .createQueryBuilder()
+      .select([
+          `c.id as id`,
+          `c.login as login`,
+          `c.registerId as register_id`,
+          `c.password as password`,
+          `r.name as name`,
+          `r.cpf as cpf`,
+          `r.rg as rg`,
+          `r.email as email`,
+          `r.cellphone as cellphone`,
+      ])
       .from(Client, `c`)
       .innerJoin(Register, "r", "c.registerId = r.id")
       .where(`c.id = :id`, { id: tokenDecode.id })
@@ -107,9 +118,11 @@ export class AuthService {
       throw { message: "User not found", code: 400 };
     }
 
+    console.log(clientFound);
+
     const newRegister = new Register();
 
-    newRegister.id = clientFound.registerId;
+    newRegister.id = clientFound.register_id;
     newRegister.name = client.register.name
       ? client.register.name
       : clientFound.name;
@@ -147,14 +160,14 @@ export class AuthService {
       .execute();
 
     await connection
-        .createQueryBuilder()
-        .update(Client)
-        .set({
-          login: newClient.login,
-          password: newClient.password
-        })
-        .where("id = :id", { id: newClient.id })
-        .execute();
+      .createQueryBuilder()
+      .update(Client)
+      .set({
+        login: newClient.login,
+        password: newClient.password,
+      })
+      .where("id = :id", { id: newClient.id })
+      .execute();
 
     return newClient;
   }
