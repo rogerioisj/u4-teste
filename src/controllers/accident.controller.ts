@@ -3,8 +3,7 @@ import * as Joi from "joi";
 import { Register } from "../entities/register.entity";
 import { Accident } from "../entities/accident.entity";
 import { AccidentService } from "../services/accident.service";
-import { getConnection } from "typeorm";
-import { Client } from "../entities/client.entity";
+import {AccidentInterface} from "../interfaces/accident.interface";
 
 const RESOURCE = "accident";
 
@@ -12,7 +11,7 @@ const create = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   try {
     const token = request.headers.authorization.split(" ");
 
-    const payload: any = request.payload;
+    const payload: AccidentInterface = <AccidentInterface>request.payload;
 
     const registers = [];
 
