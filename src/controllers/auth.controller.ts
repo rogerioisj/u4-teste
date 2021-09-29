@@ -11,7 +11,7 @@ const signup = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   try {
     const authService = new AuthService();
 
-    const body: any = request.payload;
+    const body: ClientInterface = <ClientInterface>request.payload;
 
     const newRegister = new Register();
     newRegister.name = body.name;
