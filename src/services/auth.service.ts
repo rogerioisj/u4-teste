@@ -1,11 +1,11 @@
-import { Client } from "../entities/client.entity";
+import {Client} from "../entities/client.entity";
 import * as bcrypt from "bcrypt";
-import { Connection, getConnection } from "typeorm";
-import { Register } from "../entities/register.entity";
-import { RegisterService } from "./register.service";
+import {Connection, getConnection} from "typeorm";
+import {Register, UserRole} from "../entities/register.entity";
+import {RegisterService} from "./register.service";
 import * as Hapi from "@hapi/hapi";
 import * as jwt from "jsonwebtoken";
-import { Token } from "../entities/token.entity";
+import {Token} from "../entities/token.entity";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -24,6 +24,15 @@ export class AuthService {
 
     if (!register) {
       await registerService.create(client.register);
+    }
+
+    if (register) {
+      register.name = client.register.name;
+      register.cpf = client.register.cpf;
+      register.rg = client.register.rg;
+      register.email = client.register.email;
+      register.cellphone = client.register.cellphone;
+      register.type = UserRole.CLIENT;
     }
 
     const clientRepository = connection.getRepository(Client);
