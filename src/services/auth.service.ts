@@ -7,6 +7,7 @@ import * as Hapi from "@hapi/hapi";
 import * as jwt from "jsonwebtoken";
 import { Token } from "../entities/token.entity";
 import * as dotenv from "dotenv";
+import {JwtInterface} from "../interfaces/jwt.interface";
 
 dotenv.config();
 
@@ -61,7 +62,7 @@ export class AuthService {
       { algorithm: "HS256", expiresIn: process.env.TOKEN_EXPIRATION_TIME }
     );
 
-    const tokenDecoded: any = jwt.decode(token);
+    const tokenDecoded: JwtInterface = <JwtInterface>jwt.decode(token);
 
     const connection: Connection = await getConnection();
 
