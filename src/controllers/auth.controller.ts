@@ -4,6 +4,7 @@ import { Register, UserRole } from "../entities/register.entity";
 import { AuthService } from "../services/auth.service";
 import { Client } from "../entities/client.entity";
 import {ClientInterface} from "../interfaces/client.interface";
+import {LoginInterface} from "../interfaces/login.interface";
 
 const RESOURCE = "auth";
 
@@ -44,7 +45,7 @@ const signup = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
 
 const login = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   try {
-    const user: any = request.payload;
+    const user: LoginInterface = <LoginInterface>request.payload;
 
     const authService = new AuthService();
 
