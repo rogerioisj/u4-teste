@@ -1,9 +1,9 @@
 import * as Hapi from "@hapi/hapi";
 import { RegisterService } from "../services/register.service";
 import { Register } from "../entities/register.entity";
+import { DB_CONSTRAINT_ERROR } from "../Helpers/error-codes.helper";
 
 const RESOURCE = `register`;
-const DB_CONSTRAINT_ERROR = "23505";
 
 const create: Hapi.Plugin<undefined> = {
   name: "Create Register",
@@ -12,7 +12,7 @@ const create: Hapi.Plugin<undefined> = {
       method: "POST",
       path: `/${RESOURCE}/create`,
       options: {
-        auth: "jwt"
+        auth: "jwt",
       },
       handler: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         try {
@@ -31,6 +31,10 @@ const create: Hapi.Plugin<undefined> = {
         } catch (e) {
           if (e.code === DB_CONSTRAINT_ERROR) {
             return h.response({ error: e.message }).code(400);
+          }
+
+          if (e.code) {
+            return h.response({ error: e.message }).code(e.code);
           }
 
           return h.response({ error: e.message }).code(500);

@@ -3,8 +3,9 @@ import * as Joi from "joi";
 import { Register, UserRole } from "../entities/register.entity";
 import { AuthService } from "../services/auth.service";
 import { Client } from "../entities/client.entity";
-import {ClientInterface} from "../interfaces/client.interface";
-import {LoginInterface} from "../interfaces/login.interface";
+import { ClientInterface } from "../interfaces/client.interface";
+import { LoginInterface } from "../interfaces/login.interface";
+import { DB_CONSTRAINT_ERROR } from "../Helpers/error-codes.helper";
 
 const RESOURCE = "auth";
 
@@ -30,11 +31,16 @@ const signup = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
 
     newClient = await authService.create(newClient);
 
-    return {
-      Authorization: await authService.createToken(newClient),
-      newClient,
-    };
+    return h
+      .response({
+        Authorization: await authService.createToken(newClient),
+        newClient,
+      })
+      .code(201);
   } catch (e) {
+    if (e.code === DB_CONSTRAINT_ERROR) {
+      return h.response({ error: e.message }).code(400);
+    }
     if (e.code) {
       return h.response({ error: e.message }).code(e.code);
     }
@@ -49,9 +55,11 @@ const login = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
 
     const authService = new AuthService();
 
-    return {
-      Authorization: await authService.login(user.login, user.password),
-    };
+    return h
+      .response({
+        Authorization: await authService.login(user.login, user.password),
+      })
+      .code(200);
   } catch (e) {
     if (e.code) {
       return h.response({ error: e.message }).code(e.code);
@@ -63,7 +71,7 @@ const login = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
 
 const edit = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
   try {
-    const token = request.headers.authorization.split(' ');
+    const token = request.headers.authorization.split(" ");
 
     const client: ClientInterface = <ClientInterface>request.payload;
 
@@ -84,11 +92,17 @@ const edit = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
 
     const authService = new AuthService();
 
-    return h.response(await authService.edit(clientReceived, token[1])).code(200);
+    return h
+      .response(await authService.edit(clientReceived, token[1]))
+      .code(200);
   } catch (e) {
-    /*if (e.code) {
+    if (e.code === DB_CONSTRAINT_ERROR) {
+      return h.response({ error: e.message }).code(400);
+    }
+
+    if (e.code) {
       return h.response({ error: e.message }).code(e.code);
-    }*/
+    }
     return h.response({ error: e.message }).code(500);
   }
 };

@@ -3,7 +3,8 @@ import * as Joi from "joi";
 import { Register } from "../entities/register.entity";
 import { Accident } from "../entities/accident.entity";
 import { AccidentService } from "../services/accident.service";
-import {AccidentInterface} from "../interfaces/accident.interface";
+import { AccidentInterface } from "../interfaces/accident.interface";
+import { DB_CONSTRAINT_ERROR } from "../Helpers/error-codes.helper";
 
 const RESOURCE = "accident";
 
@@ -38,9 +39,12 @@ const create = async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
       .response({ accident: await accidentService.create(accident, token[1]) })
       .code(201);
   } catch (e) {
-    /*if (e.code) {
-          return h.response({ error: e.message }).code(e.code);
-        }*/
+    if (e.code === DB_CONSTRAINT_ERROR) {
+      return h.response({ error: e.message }).code(400);
+    }
+    if (e.code) {
+      return h.response({ error: e.message }).code(e.code);
+    }
     return h.response({ error: e.message }).code(500);
   }
 };
