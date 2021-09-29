@@ -118,8 +118,6 @@ export class AuthService {
       throw { message: "User not found", code: 400 };
     }
 
-    console.log(clientFound);
-
     const newRegister = new Register();
 
     newRegister.id = clientFound.register_id;
