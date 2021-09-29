@@ -3,10 +3,11 @@ import { Accident } from "../entities/accident.entity";
 import * as jwt from "jsonwebtoken";
 import { Connection, getConnection } from "typeorm";
 import { Client } from "../entities/client.entity";
+import {JwtInterface} from "../interfaces/jwt.interface";
 
 export class AccidentService {
   async create(accident: Accident, token: string) {
-    const tokenDecode: any = jwt.decode(token);
+    const tokenDecode: JwtInterface = <JwtInterface>jwt.decode(token);
 
     const connection: Connection = await getConnection();
 
