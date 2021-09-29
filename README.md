@@ -31,8 +31,6 @@ Feito o clone do projeto, execute os seguintes comandos dentro da raiz do projet
 
 # Rotas
 
-## Auth
-
 ### {{server}}/auth/signup
 
 Essa rota é responsável pela criação de um cliente e retorna os dados salvos (exceto a senha) junto do token de autenticação. Caso já exista o registro da pessoa como terceiro, os dados serão atualizados. A verificação é feita com base no CPF informado.
@@ -110,6 +108,10 @@ Para exemplificar, segue abaixo um JSON de exemplo para essa rota:
     "license_plate": "PSP1435"
 }
 ~~~
+
+# Postman Doc
+
+Para facilitar a execução, segue o link com a documentação gerada pelo postman e com scripts para salvamento automático de tokens: [Documentação](https://documenter.getpostman.com/view/13068814/UUy1dRm1)
 
 
 
